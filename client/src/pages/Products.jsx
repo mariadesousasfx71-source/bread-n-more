@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import api, { errorMessage } from '../api/client'
 import useDebounce from '../hooks/useDebounce'
 import Title from '../components/Title'
@@ -8,6 +9,7 @@ import { PageLoader, ErrorBox, EmptyState } from '../components/ui'
 
 // The shop page. Search, filter, sort and paging are done by the SERVER: this page only sends the choices.
 const Products = () => {
+  const [searchParams] = useSearchParams() // ?category=Breads comes from the pictures on the home page
   const [products, setProducts] = useState([])
   const [pagination, setPagination] = useState(null)
   const [categories, setCategories] = useState([])
@@ -23,7 +25,15 @@ const Products = () => {
 
   // load the categories once (each one has an _id, a name and a productCount)
   useEffect(() => {
-    api.get('/categories').then(({ data }) => setCategories(data.data)).catch(() => {})
+    api
+      .get('/categories')
+      .then(({ data }) => {
+        setCategories(data.data)
+        const wanted = searchParams.get('category')
+        const found = wanted && data.data.find((item) => item.name.toLowerCase() === wanted.toLowerCase())
+        if (found) setCategory(found._id)
+      })
+      .catch(() => {})
   }, [])
 
   // load the products again whenever a choice changes

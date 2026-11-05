@@ -44,17 +44,32 @@ const AdminProducts = () => {
   const [error, setError] = useState('')
 
   const [search, setSearch] = useState('')
+  const [categories, setCategories] = useState([])
+  const [category, setCategory] = useState('')
   const [stock, setStock] = useState(searchParams.get('stock') || '')
   const [showHidden, setShowHidden] = useState(false)
   const [page, setPage] = useState(1)
   const debouncedSearch = useDebounce(search)
+
+  // load the categories once; ?category=Breads (from the home page pictures) picks one
+  useEffect(() => {
+    api
+      .get('/categories')
+      .then(({ data }) => {
+        setCategories(data.data)
+        const wanted = searchParams.get('category')
+        const found = wanted && data.data.find((item) => item.name.toLowerCase() === wanted.toLowerCase())
+        if (found) setCategory(found._id)
+      })
+      .catch(() => {})
+  }, [])
 
   const load = () => {
     let ignore = false
     setLoading(true)
     setError('')
     api
-      .get('/products', { params: { page, limit: 10, search: debouncedSearch, stock, includeInactive: showHidden, sort: 'name' } })
+      .get('/products', { params: { page, limit: 10, search: debouncedSearch, category, stock, includeInactive: showHidden, sort: 'name' } })
       .then(({ data }) => {
         if (ignore) return
         setProducts(data.data)
@@ -66,7 +81,7 @@ const AdminProducts = () => {
       ignore = true
     }
   }
-  useEffect(load, [page, debouncedSearch, stock, showHidden])
+  useEffect(load, [page, debouncedSearch, category, stock, showHidden])
 
   const setActive = async (product, isActive) => {
     if (!isActive && !window.confirm(`Remove "${product.name}" from the shop? Old orders keep their record.`)) return
@@ -87,8 +102,14 @@ const AdminProducts = () => {
         <Link to="/admin/products/new" className="btn-primary">+ Add product</Link>
       </div>
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-[2fr_1fr_auto]">
+      <div className="mb-6 grid gap-3 sm:grid-cols-[2fr_1fr_1fr_auto]">
         <input value={search} onChange={(e) => { setSearch(e.target.value); setPage(1) }} className="input" placeholder="Search by name or code" />
+        <select value={category} onChange={(e) => { setCategory(e.target.value); setPage(1) }} className="input">
+          <option value="">All categories</option>
+          {categories.map((item) => (
+            <option key={item._id} value={item._id}>{item.name}</option>
+          ))}
+        </select>
         <select value={stock} onChange={(e) => { setStock(e.target.value); setPage(1) }} className="input">
           <option value="">All stock levels</option>
           <option value="low">Low on stock</option>
