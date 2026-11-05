@@ -98,7 +98,7 @@ erDiagram
         string customerName
         number weightKg
         date requiredDate
-        string status "requested | quoted | confirmed | ready | delivered | cancelled"
+        string status "requested | quoted | confirmed | paid | ready | delivered | cancelled"
         number quotedPrice
         number advancePaid
     }
