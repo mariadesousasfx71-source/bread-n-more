@@ -1,0 +1,4 @@
+node_modules/
+.env
+# an old copy of the project that is not part of the repo
+bread-n-more/
