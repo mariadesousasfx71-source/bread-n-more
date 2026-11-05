@@ -2522,6 +2522,59 @@
           }
         },
         {
+          "name": "200 Admin: mark paid (balance becomes 0)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200))",
+                  "pm.test('order is paid and the whole price is recorded', () => {",
+                  "  const order = pm.response.json().data",
+                  "  pm.expect(order.status).to.eql('paid')",
+                  "  pm.expect(order.advancePaid).to.eql(order.quotedPrice)",
+                  "})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cake-orders/{{cakeOrderId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cake-orders",
+                "{{cakeOrderId}}",
+                "status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"paid\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
           "name": "200 Admin: mark ready",
           "event": [
             {
