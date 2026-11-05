@@ -21,13 +21,6 @@ const Home = () => {
       ? { to: '/admin', text: 'OPEN THE DASHBOARD' }
       : { to: '/products', text: 'GO TO THE SHOP' }
 
-  // a category picture opens the shop (staff) or the product list (admin) already filtered to that category
-  const categoryLink = (name) => {
-    if (!user) return '/login'
-    const base = user.role === 'admin' ? '/admin/products' : '/products'
-    return `${base}?category=${encodeURIComponent(name)}`
-  }
-
   return (
     <div>
       {/* HERO: cream card, text on the left, the bread picture (site.images.hero) on the right */}
@@ -54,12 +47,12 @@ const Home = () => {
       {/* CATEGORIES: small round pictures right under the banner (from site.showcase in siteConfig.js) */}
       <div className="mb-6 mt-6 grid grid-cols-3 gap-x-4 gap-y-5 sm:grid-cols-6">
         {site.showcase.map((item) => (
-          <Link key={item.title} to={categoryLink(item.title)} className="group flex flex-col items-center text-center">
+          <div key={item.title} className="group flex flex-col items-center text-center">
             <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-bread-red/30 bg-bread-latte/60 p-2 shadow-sm transition group-hover:scale-105 group-hover:border-bread-red sm:h-24 sm:w-24">
               <img src={`/images/categories/${item.file}`} alt={item.title} className="h-full w-full object-contain" />
             </span>
             <span className="mt-2 text-xs font-medium text-bread-dark sm:text-sm">{item.title}</span>
-          </Link>
+          </div>
         ))}
       </div>
 
