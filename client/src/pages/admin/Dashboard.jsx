@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api, { errorMessage } from '../../api/client'
-import { formatMoney } from '../../config/siteConfig'
-import { StockBadge } from '../../components/Badges'
+import { formatDate, formatMoney } from '../../config/siteConfig'
+import { StockBadge, CakeStatusBadge } from '../../components/Badges'
 import ProductImage from '../../components/ProductImage'
 import { PageLoader, ErrorBox, EmptyState } from '../../components/ui'
 
@@ -84,7 +84,29 @@ const Dashboard = () => {
         <Stat label="Revenue today" value={formatMoney(summary.revenueToday)} />
         <Stat label="Cake requests to price" value={summary.newCakeRequests} to="/admin/cakes" warn={summary.newCakeRequests > 0} />
         <Stat label="Cakes needed in 3 days" value={summary.cakesDueSoon} to="/admin/cakes" warn={summary.cakesDueSoon > 0} />
+        <Stat label="Open special cake orders" value={summary.cakesActive} to="/admin/cakes" />
       </div>
+
+      {/* SPECIAL CAKES: the next open cake orders, earliest date first */}
+      <section>
+        <h2 className="mb-3 text-2xl">Upcoming special cakes</h2>
+        {summary.upcomingCakes.length === 0 ? (
+          <EmptyState text="No open special cake orders." />
+        ) : (
+          <div className="card divide-y divide-bread-latte p-0">
+            {summary.upcomingCakes.map((cake) => (
+              <div key={cake._id} className="flex flex-wrap items-center gap-4 p-3">
+                <div className="flex-1">
+                  <p className="font-medium">{cake.customerName} · {cake.flavour}, {cake.weightKg} kg</p>
+                  <p className="text-xs text-bread-brown">Needed on {formatDate(cake.requiredDate)}{cake.quotedPrice != null ? ` · ${formatMoney(cake.quotedPrice)}` : ' · price not set yet'}</p>
+                </div>
+                <CakeStatusBadge status={cake.status} />
+                <Link to="/admin/cakes" className="btn-outline">Open</Link>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* LOW STOCK LIST */}
       <section>

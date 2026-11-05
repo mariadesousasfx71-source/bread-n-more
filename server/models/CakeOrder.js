@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
 
-export const CAKE_STATUSES = ['requested', 'quoted', 'confirmed', 'ready', 'delivered', 'cancelled']
+export const CAKE_STATUSES = ['requested', 'quoted', 'confirmed', 'paid', 'ready', 'delivered', 'cancelled']
 
 // A SPECIAL CAKE ORDER (birthday, wedding, Christmas...). It is made to order, so it does NOT touch the stock.
 // Life of a cake order:
 //   requested (staff took the request) -> quoted (admin set a price) -> confirmed (customer agreed)
-//   -> ready -> delivered.     It can be cancelled before it is ready.
+//   -> paid (the full price has been paid, advance + balance) -> ready -> delivered.     It can be cancelled before it is ready.
 const cakeOrderSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // the staff member who took the request

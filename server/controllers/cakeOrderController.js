@@ -12,7 +12,8 @@ const MAX_DAYS_AHEAD = 90
 
 // Which statuses an order may come FROM, for each status the admin can set
 const ADMIN_CHANGES = {
-  ready: ['confirmed'],
+  paid: ['confirmed'], // the customer paid the whole price
+  ready: ['confirmed', 'paid'],
   delivered: ['ready'],
   cancelled: ['requested', 'quoted', 'confirmed'],
 }
@@ -161,13 +162,21 @@ export const acceptQuote = asyncHandler(async (req, res) => {
   res.json({ success: true, message: 'Cake order confirmed', data: order })
 })
 
-// PATCH /api/cake-orders/:id/status   body: { status: 'ready' | 'delivered' | 'cancelled' }   (admin)
+// PATCH /api/cake-orders/:id/status   body: { status: 'paid' | 'ready' | 'delivered' | 'cancelled' }   (admin)
 export const updateCakeStatus = asyncHandler(async (req, res) => {
   const { status } = req.body
   const from = typeof status === 'string' && Object.hasOwn(ADMIN_CHANGES, status) ? ADMIN_CHANGES[status] : null
-  if (!from) throw new AppError('Status must be ready, delivered or cancelled', 400)
+  if (!from) throw new AppError('Status must be paid, ready, delivered or cancelled', 400)
 
-  const order = await CakeOrder.findOneAndUpdate({ _id: req.params.id, status: { $in: from } }, { status }, { new: true })
+  const update = { status }
+  if (status === 'paid') {
+    // paying in full: the advance becomes the whole price (so the balance is 0)
+    const current = await findOr404(req.params.id)
+    if (current.quotedPrice == null) throw new AppError('Set a price before marking the order as paid', 400)
+    update.advancePaid = current.quotedPrice
+  }
+
+  const order = await CakeOrder.findOneAndUpdate({ _id: req.params.id, status: { $in: from } }, update, { new: true })
   if (!order) {
     await findOr404(req.params.id)
     throw new AppError(`This cake order cannot be changed to "${status}" from its current status`, 400)

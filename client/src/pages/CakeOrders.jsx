@@ -75,6 +75,7 @@ const CakeOrders = () => {
           <option value="requested">Requested (waiting for a price)</option>
           <option value="quoted">Quoted (ask the customer)</option>
           <option value="confirmed">Confirmed</option>
+          <option value="paid">Paid</option>
           <option value="ready">Ready</option>
           <option value="delivered">Delivered</option>
           <option value="cancelled">Cancelled</option>

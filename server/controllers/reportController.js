@@ -24,7 +24,7 @@ export const summary = asyncHandler(async (req, res) => {
   const todayRange = { $gte: dayStart(today), $lte: dayEnd(today) }
   const soon = { $gte: dayStart(today), $lte: dayEnd(addDays(today, 3)) } // cakes needed in the next 3 days
 
-  const [totalProducts, lowStock, outOfStock, pendingStaff, ordersToday, revenue, newCakeRequests, cakesDueSoon] = await Promise.all([
+  const [totalProducts, lowStock, outOfStock, pendingStaff, ordersToday, revenue, newCakeRequests, cakesDueSoon, cakesActive, upcomingCakes] = await Promise.all([
     Product.countDocuments({ isActive: true }),
     Product.countDocuments({ isActive: true, $expr: { $lte: ['$stock', '$lowStockThreshold'] } }),
     Product.countDocuments({ isActive: true, stock: 0 }),
@@ -36,7 +36,12 @@ export const summary = asyncHandler(async (req, res) => {
       { $group: { _id: null, revenue: { $sum: '$total' } } },
     ]),
     CakeOrder.countDocuments({ status: 'requested' }), // waiting for the admin to set a price
-    CakeOrder.countDocuments({ status: { $in: ['confirmed', 'ready'] }, requiredDate: soon }), // to bake or hand over soon
+    CakeOrder.countDocuments({ status: { $in: ['confirmed', 'paid', 'ready'] }, requiredDate: soon }), // to bake or hand over soon
+    CakeOrder.countDocuments({ status: { $in: ['requested', 'quoted', 'confirmed', 'paid', 'ready'] } }), // every cake order still open
+    CakeOrder.find({ status: { $in: ['requested', 'quoted', 'confirmed', 'paid', 'ready'] } }) // the next 5 cakes to deal with
+      .sort({ requiredDate: 1 })
+      .limit(5)
+      .select('customerName flavour weightKg requiredDate status quotedPrice advancePaid'),
   ])
 
   res.json({
@@ -50,6 +55,8 @@ export const summary = asyncHandler(async (req, res) => {
       revenueToday: round(revenue[0]?.revenue || 0),
       newCakeRequests,
       cakesDueSoon,
+      cakesActive,
+      upcomingCakes,
     },
   })
 })

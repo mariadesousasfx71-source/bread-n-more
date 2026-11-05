@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   PAGE BACKGROUND
+   To change the background of the whole website, replace the file
+   public/images/backgrounds/page-bg.svg  (or change the file name below).
+   Use a small repeating pattern, or a big photo (see the manual).
+---------------------------------------------------------------- */
+body {
+  font-family: Inter, system-ui, sans-serif;
+  color: #4a2c17;
+  background-color: #fff8ea;
+  background-image: url('/images/backgrounds/page-bg.svg');
+  background-repeat: repeat;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* ---------------------------------------------------------------
+   READY-MADE CLASSES used all over the app (buttons, inputs, cards).
+   Change one here and every page changes.
+---------------------------------------------------------------- */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-bread-dark px-6 py-2 text-sm font-medium text-white transition hover:bg-bread-brown disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-full border border-bread-brown/40 bg-white px-5 py-2 text-sm font-medium text-bread-dark transition hover:bg-bread-latte disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-full border border-red-300 bg-white px-5 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .input {
+    @apply w-full rounded-lg border border-bread-brown/30 bg-white px-3 py-2 outline-none focus:border-bread-caramel focus:ring-2 focus:ring-bread-caramel/30;
+  }
+  .card {
+    @apply rounded-xl border border-bread-latte bg-white p-5 shadow-sm;
+  }
+}
+
+/* ---------------------------------------------------------------
+   GOLDEN CHECK AWNING - used by the navbar.
+   The picture itself is set in siteConfig.js (images.navbar).
+   background-size = how big the checks are (bigger number = bigger checks).
+---------------------------------------------------------------- */
+.gingham {
+  background-color: #fbf1d8;
+  background-repeat: repeat;
+  background-size: 36px 36px;
+}
+
+/* the scalloped edge that hangs under the navbar, like a bakery awning */
+.awning-edge {
+  height: 18px;
+  -webkit-mask-image: radial-gradient(circle 18px at 50% 0, #000 17px, transparent 18px);
+  mask-image: radial-gradient(circle 18px at 50% 0, #000 17px, transparent 18px);
+  -webkit-mask-size: 36px 18px;
+  mask-size: 36px 18px;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+}
+.awning-shadow {
+  filter: drop-shadow(0 3px 2px rgba(74, 44, 23, 0.25));
+}
+
+/* vintage finish on the awning: a dark rod along the top and soft shading like faded fabric */
+.vintage-awning {
+  border-top: 5px solid #4a2c17;
+  box-shadow:
+    inset 0 10px 14px -10px rgba(74, 44, 23, 0.45),
+    inset 0 -12px 18px -12px rgba(74, 44, 23, 0.35);
+}
+
+/* cream enamel "plaques" that hold the links and icons on the awning */
+.plaque {
+  background: #f6ecd6;
+  border: 2px solid #4a2c17;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 0 3px #f6ecd6,
+    inset 0 0 0 4px rgba(212, 147, 47, 0.9),
+    0 3px 6px rgba(74, 44, 23, 0.28);
+}
+
+/* hide the number-input arrows */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+a.active hr {
+  display: block;
+}

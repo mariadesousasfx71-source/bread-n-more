@@ -12,9 +12,11 @@ const nextSteps = {
   requested: [{ status: 'cancelled', label: 'Cancel', style: 'btn-danger' }],
   quoted: [{ status: 'cancelled', label: 'Cancel', style: 'btn-danger' }],
   confirmed: [
+    { status: 'paid', label: 'Mark paid', style: 'btn-outline' },
     { status: 'ready', label: 'Mark ready', style: 'btn-primary' },
     { status: 'cancelled', label: 'Cancel', style: 'btn-danger' },
   ],
+  paid: [{ status: 'ready', label: 'Mark ready', style: 'btn-primary' }],
   ready: [{ status: 'delivered', label: 'Mark delivered', style: 'btn-primary' }],
   delivered: [],
   cancelled: [],
@@ -93,6 +95,7 @@ const AdminCakeOrders = () => {
           <option value="requested">Requested (needs a price)</option>
           <option value="quoted">Quoted</option>
           <option value="confirmed">Confirmed</option>
+          <option value="paid">Paid</option>
           <option value="ready">Ready</option>
           <option value="delivered">Delivered</option>
           <option value="cancelled">Cancelled</option>

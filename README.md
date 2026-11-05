@@ -114,7 +114,7 @@ All collections have `createdAt` and `updatedAt` (`timestamps: true`).
 4. The admin can add or remove stock by hand (a bake, unsold goods). Removing more than there is gives `400`.
 5. **Every stock change writes a line in the stock ledger** (`StockMovement`): the change, the stock after it, who did it, and the order if there was one.
 6. Removing a product only hides it (`isActive: false`). A category with products cannot be deleted (`409`).
-7. **Special cakes are made to order, so they do not touch the stock.** They need 2 days notice, and go `requested` → `quoted` → `confirmed` → `ready` → `delivered`.
+7. **Special cakes are made to order, so they do not touch the stock.** They need 2 days notice, and go `requested` → `quoted` → `confirmed` → `paid` → `ready` → `delivered` (`paid` is the admin marking the full price as paid; it can be skipped).
 
 ## API
 
@@ -152,7 +152,7 @@ Every route starts with `/api`. "Logged in" routes need the header `Authorizatio
 | GET | `/cake-orders/:id` | owner or admin | One cake order | 200 | 403, 404 |
 | PATCH | `/cake-orders/:id/quote` | admin | Set or change the price | 200 | 400, 403, 404 |
 | PATCH | `/cake-orders/:id/accept` | owner | The customer agreed; note the advance | 200 | 400, 403, 404 |
-| PATCH | `/cake-orders/:id/status` | admin | Mark ready, delivered or cancelled | 200 | 400, 403, 404 |
+| PATCH | `/cake-orders/:id/status` | admin | Mark paid, ready, delivered or cancelled | 200 | 400, 403, 404 |
 | PATCH | `/cake-orders/:id/advance` | admin | Record more advance money | 200 | 400, 403, 404 |
 | PATCH | `/cake-orders/:id/cancel` | owner | Cancel before it is confirmed | 200 | 400, 403, 404 |
 | GET | `/reports/summary` | admin | Dashboard numbers | 200 | 403 |
