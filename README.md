@@ -2,8 +2,9 @@
 
 A full-stack MERN app (MongoDB, Express, React, Node.js) for **Bread & More**, a bakery that sells breads, biscuits, pastries, cakes, burgers, sandwiches and savouries (patties, croquettes, rissois, samosas), and takes **special cake orders**. Counter staff take orders, the admin controls the stock, and the stock numbers stay correct.
 
-- **Live website:** `https://YOUR-CLIENT-ADDRESS`
-- **Live API:** `https://YOUR-SERVER-ADDRESS/api/health`
+- **Live website (Vercel):** https://bread-n-more.vercel.app
+- **Live API (Railway):** https://bread-n-more-production.up.railway.app/api/health
+- **GitHub:** https://github.com/mariadesousasfx71-source/bread-n-more
 
 ## Roles
 
@@ -16,9 +17,9 @@ A full-stack MERN app (MongoDB, Express, React, Node.js) for **Bread & More**, a
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | `YOUR-ADMIN-EMAIL` | `YOUR-ADMIN-PASSWORD` |
-| User | `YOUR-USER-EMAIL` | `YOUR-USER-PASSWORD` |
-| User 2 | `YOUR-SECOND-USER-EMAIL` | `YOUR-SECOND-USER-PASSWORD` |
+| Admin | `admin@breadandmore.com` | `BreadAdmin2026` |
+| User | `staff@breadandmore.com` | `Staff12345` |
+| User 2 | `staff2@breadandmore.com` | `Staff54321` |
 
 ## Run it on your computer
 

@@ -36,8 +36,12 @@ const Login = () => {
       } else {
         const loggedIn = await login(email, password)
         // go back to the page they wanted, or to the home page of their role
+        // (only if the role may open it: staff never go back to an admin page, and admins only to admin pages)
+        const home = loggedIn.role === 'admin' ? '/admin' : '/products'
         const wanted = location.state?.from?.pathname
-        navigate(wanted || (loggedIn.role === 'admin' ? '/admin' : '/products'), { replace: true })
+        const isAdminPage = Boolean(wanted) && wanted.startsWith('/admin')
+        const allowed = Boolean(wanted) && wanted !== '/login' && (loggedIn.role === 'admin' ? isAdminPage : !isAdminPage)
+        navigate(allowed ? wanted : home, { replace: true })
       }
     } catch (err) {
       setError(errorMessage(err)) // e.g. "Your account is waiting for admin approval."
