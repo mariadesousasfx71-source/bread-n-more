@@ -8,6 +8,7 @@ import AppError from '../utils/AppError.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { getPaging, pageInfo, escapeRegex } from '../utils/paginate.js'
 import { logMovements } from '../utils/stock.js'
+import { uploadsDir } from '../config/uploadsPaths.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -34,7 +35,7 @@ const deleteUploadedPhoto = (imagePath) => {
   if (typeof imagePath !== 'string' || !imagePath.startsWith('/uploads/')) return
   const file = path.basename(imagePath)
   if (!/^\d{10,}-/.test(file)) return
-  fs.unlink(path.join(__dirname, '..', 'uploads', file), () => {})
+  fs.unlink(path.join(uploadsDir, file), () => {})
 }
 
 // GET /api/products?page=1&limit=12&search=bread&category=<id>&stock=low&sort=price_asc

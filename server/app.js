@@ -13,10 +13,9 @@ import productRoutes from './routes/productRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import cakeOrderRoutes from './routes/cakeOrderRoutes.js'
 import reportRoutes from './routes/reportRoutes.js'
+import { uploadsDir, starterDir } from './config/uploadsPaths.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const uploadsDir = path.join(__dirname, 'uploads')
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true })
 
 const app = express()
 
@@ -42,8 +41,9 @@ app.use(
 
 app.use(express.json({ limit: '100kb' }))
 
-// Product photos live in server/uploads and are served at  /uploads/<file name>
+// Product photos are served at  /uploads/<file name>: first the photos uploaded through the app, then the starter pictures
 app.use('/uploads', express.static(uploadsDir))
+if (starterDir !== uploadsDir) app.use('/uploads', express.static(starterDir))
 
 // ---- api endpoints ----
 app.get('/api/health', (req, res) => res.json({ success: true, message: 'Bread & More API is working' }))

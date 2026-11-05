@@ -1,13 +1,11 @@
 import multer from 'multer'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import AppError from '../utils/AppError.js'
+import { uploadsDir } from '../config/uploadsPaths.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-// Saves an uploaded product photo into server/uploads with a unique name
+// Saves an uploaded product photo into the uploads folder with a unique name
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, '..', 'uploads'),
+  destination: uploadsDir,
   filename: (req, file, callback) => {
     const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')
     callback(null, `${Date.now()}-${safeName}`)
