@@ -33,7 +33,7 @@ const products = [
   ['Biscuits & Cookies', 'BIS-001', 'Butter Biscuits (250 g)', 'Crumbly butter biscuits, great with tea.', 'pack', 80, 'butter-biscuits.png', 35, 10],
   ['Biscuits & Cookies', 'BIS-002', 'Coconut Biscuits (250 g)', 'Crunchy biscuits with desiccated coconut.', 'pack', 70, 'coconut-biscuits.png', 30, 10],
   ['Biscuits & Cookies', 'BIS-003', 'Choco Chip Cookies', 'Big cookies loaded with chocolate chips.', 'pack', 120, 'choco-cookies.png', 22, 8],
-  ['Biscuits & Cookies', 'BIS-004', 'Jeera Biscuits (250 g)', 'Savoury cumin biscuits.', 'pack', 60, '', 28, 10],
+  ['Biscuits & Cookies', 'BIS-004', 'Jeera Biscuits (250 g)', 'Savoury cumin biscuits.', 'pack', 60, 'jeera-biscuits.png', 28, 10],
   ['Biscuits & Cookies', 'BIS-005', 'Nankhatai (250 g)', 'Melt-in-the-mouth cardamom shortbread.', 'pack', 90, 'nankhatai.jpg', 0, 8],
   ['Pastries', 'PAS-001', 'Chocolate Pastry', 'Layers of chocolate sponge and cream.', 'piece', 60, 'choc-pastry.png', 24, 8],
   ['Pastries', 'PAS-002', 'Pineapple Pastry', 'Light sponge with pineapple cream.', 'piece', 55, 'pineapple-pastry.png', 20, 8],
