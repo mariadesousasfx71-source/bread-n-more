@@ -1,4 +1,4 @@
-# Bread & More: Bakery Inventory, Orders and Special Cakes
+# Bread & More: Bakery Inventory and Orders
 
 A full-stack MERN app (MongoDB, Express, React, Node.js) for **Bread & More**, a bakery that sells breads, biscuits, pastries, cakes, burgers, sandwiches and savouries (patties, croquettes, rissois, samosas), and takes **special cake orders**. Counter staff take orders, the admin controls the stock, and the stock numbers stay correct.
 
@@ -11,7 +11,7 @@ A full-stack MERN app (MongoDB, Express, React, Node.js) for **Bread & More**, a
 | Role | What they can do |
 |---|---|
 | **User** (counter staff) | Register (the account waits for approval), log in once approved, browse the products, place orders for customers, take special-cake requests, see and cancel their own pending orders |
-| **Admin** | Everything below, plus: manage categories and products, add or remove stock and read the stock history, approve or block staff, see all orders (date filter), set cake prices and move cake orders along, see the dashboard (low stock, revenue, best sellers, sales by category) |
+| **Admin** | Everything below, plus: manage categories and products, add or remove stock and read the stock history, approve or block staff, see all orders (date filter), set cake prices and move cake orders along (including marking them paid), see the dashboard (low stock, revenue, open and upcoming special cakes, best sellers, sales by category) |
 
 ## Test logins (for the examiner)
 
@@ -161,6 +161,18 @@ Every route starts with `/api`. "Logged in" routes need the header `Authorizatio
 | GET | `/reports/sales-by-category` | admin | Revenue per category (joins orders, products and categories) | 200 | 400, 403 |
 
 Lists reply with `{ success, data, pagination: { page, limit, total, totalPages } }`. Errors reply with `{ success: false, message }`.
+
+## Deploying
+
+| Part | Where | Notes |
+|---|---|---|
+| Database | MongoDB Atlas | Network access allows the hosting service. Run `npm run seed` once to create the admin and the starter products (it deletes nothing). |
+| Backend (`server`) | Railway | Root directory `/server`. Set the variables below. |
+| Frontend (`client`) | Vercel | Root directory `client`. Set `VITE_API_URL` to the Railway address plus `/api`. `vercel.json` sends every page to `index.html`. |
+
+Railway variables: `NODE_ENV`, `MONGODB_URI`, `DB_NAME`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `CLIENT_URL` (the Vercel address), `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `UTC_OFFSET` and `UPLOADS_DIR`.
+
+**Product photos:** the starter pictures are part of the code. Photos uploaded through the app are saved in the folder named by `UPLOADS_DIR`. Railway wipes its disk on every deploy, so a Railway Volume is mounted at `/data` and `UPLOADS_DIR` is `/data/uploads`. Without it, uploaded photos disappear at the next deploy. Locally, leave `UPLOADS_DIR` out and photos go in `server/uploads`.
 
 ## Security
 
